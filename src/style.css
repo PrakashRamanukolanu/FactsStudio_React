@@ -101,8 +101,8 @@ body {
 
 .main {
   display: grid;
-  grid-template-columns: 180px 1fr;
-  column-gap: 50px;
+  grid-template-columns: 200px 1fr;
+  column-gap: 40px;
 }
 
 /* changes properties at 700px */
@@ -190,7 +190,7 @@ ul {
 
 .btn {
   font-family: "Coiny", sans-serif;
-  padding: 5px 40px 3px;
+  padding: 5px 17px 3px;
   background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
   color: inherit;
   border: none;
@@ -204,7 +204,7 @@ ul {
 }
 
 .btn-large {
-  font-size: 20px;
+  font-size: large;
 }
 
 .btn-all {

@@ -69,7 +69,25 @@ function NewFactForm() {
 }
 
 function FilterCategory() {
-  return <aside>Categories here</aside>;
+  return (
+    <aside>
+      <ul>
+        <li>
+          <button className="btn btn-all">All</button>
+        </li>
+        {CATEGORIES.map((category) => (
+          <li key={category.name}>
+            <button
+              className="btn btn-category"
+              style={{ backgroundColor: category.color }}
+            >
+              {category.name.toUpperCase()}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  );
 }
 
 function FactList() {
@@ -81,6 +99,7 @@ function FactList() {
           <Fact key={fact.id} fact={fact} />
         ))}
       </ul>
+      <p>There are {facts.length} facts in the Database.</p>
     </section>
   );
 }
