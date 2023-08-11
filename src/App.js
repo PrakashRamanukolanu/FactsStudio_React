@@ -78,10 +78,15 @@ function FactList() {
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <li className="facts">
+          <li key={fact.id} className="facts">
             <p>
               {fact.text}
-              <a className="source" href={fact.source} target="_blank">
+              <a
+                className="source"
+                href={fact.source}
+                target="_blank"
+                rel="noreferrer"
+              >
                 (Source)
               </a>
               <span
