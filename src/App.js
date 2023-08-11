@@ -46,19 +46,9 @@ const initialFacts = [
   },
 ];
 
-function Counter() {
-  const [count, setCount] = useState(1);
-  return (
-    <div>
-      <span style={{ paddingRight: "10px", fontSize: "25px" }}>{count}</span>
-      <button className="btn btn-large" onClick={() => setCount((c) => c + 1)}>
-        Add 1
-      </button>
-    </div>
-  );
-}
-
 function App() {
+  // 1. Define State Variable
+  const [showForm, setShowform] = useState(false);
   return (
     <>
       <header className="header">
@@ -66,10 +56,16 @@ function App() {
           <img src="logo.png" alt="Facts Office Logo" />
           <h1>Facts Studio</h1>
         </div>
-        <button className="btn btn-large btn-share">Share a fact</button>
+        <button
+          className="btn btn-large btn-share"
+          // 3.Update State variable
+          onClick={() => setShowform((show) => !show)}
+        >
+          Share a fact
+        </button>
       </header>
-      <Counter />
-      <NewFactForm />
+      {/* 2.Use State variable */}
+      {showForm ? <NewFactForm /> : null}
       <main className="main">
         <FilterCategory />
         <FactList />
