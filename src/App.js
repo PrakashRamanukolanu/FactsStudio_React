@@ -60,7 +60,10 @@ function App() {
   useEffect(function() {
     setLoading(true);
     async function getFacts() {
-      const { data: facts, error } = await supabase.from("facts").select("*");
+      const { data: facts, error } = await supabase
+        .from("facts")
+        .select("*")
+        .order("votes_like", { ascending: false });
       setFacts(facts);
       setLoading(false);
     }
