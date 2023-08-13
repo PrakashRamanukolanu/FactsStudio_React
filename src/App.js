@@ -48,14 +48,21 @@ const initialFacts = [
   },
 ];
 
+function Loader() {
+  return <p className="message">Loading...</p>;
+}
+
 function App() {
   const [showForm, setShowform] = useState(false);
   const [facts, setFacts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(function() {
+    setLoading(true);
     async function getFacts() {
       const { data: facts, error } = await supabase.from("facts").select("*");
       setFacts(facts);
+      setLoading(false);
     }
     getFacts();
   }, []);
@@ -71,7 +78,7 @@ function App() {
       ) : null}
       <main className="main">
         <FilterCategory />
-        <FactList facts={facts} />
+        {loading ? <Loader /> : <FactList facts={facts} />}
       </main>
     </>
   );
