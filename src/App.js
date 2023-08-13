@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import supabase from "./supabase";
 import "./style.css";
 
 const CATEGORIES = [
@@ -25,7 +26,8 @@ const initialFacts = [
   },
   {
     id: 2,
-    text: "Millennial dads spend 3 times as much time with their kids than their fathers spent with them. In 1982, 43% of fathers had never changed a diaper. Today, that number is down to 3%",
+    text:
+      "Millennial dads spend 3 times as much time with their kids than their fathers spent with them. In 1982, 43% of fathers had never changed a diaper. Today, that number is down to 3%",
     source:
       "https://www.mother.ly/parenting/millennial-dads-spend-more-time-with-their-kids",
     category: "society",
@@ -48,8 +50,15 @@ const initialFacts = [
 
 function App() {
   const [showForm, setShowform] = useState(false);
-  const [facts, setFacts] = useState(initialFacts);
+  const [facts, setFacts] = useState([]);
 
+  useEffect(function() {
+    async function getFacts() {
+      const { data: facts, error } = await supabase.from("facts").select("*");
+      setFacts(facts);
+    }
+    getFacts();
+  }, []);
   return (
     <>
       <Header setShowForm={setShowform} showForm={showForm} />
@@ -195,7 +204,7 @@ function Fact({ fact }) {
   return (
     <li key={fact.id} className="facts">
       <p>
-        {fact.text}
+        {fact.fact}
         <a
           className="source"
           href={fact.source}
@@ -216,9 +225,9 @@ function Fact({ fact }) {
         </span>
       </p>
       <div className="vote-buttons">
-        <button>👍 {fact.votesInteresting}</button>
-        <button>🤯 {fact.votesMindblowing}</button>
-        <button>⛔️ {fact.votesFalse}</button>
+        <button>👍 {fact.votes_like}</button>
+        <button>🤯 {fact.votes_mindblowing}</button>
+        <button>⛔️ {fact.votes_false}</button>
       </div>
     </li>
   );
