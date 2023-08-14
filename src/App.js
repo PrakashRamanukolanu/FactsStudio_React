@@ -20,7 +20,7 @@ function Loader() {
 function App() {
   const [showForm, setShowform] = useState(false);
   const [facts, setFacts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState("all");
 
   useEffect(
@@ -28,7 +28,7 @@ function App() {
       async function getFacts() {
         let query = supabase.from("facts").select("*");
         if (category !== "all") query = query.eq("category", category);
-        setLoading(true);
+        setIsLoading(true);
 
         const { data: facts, error } = await query
           .order("votes_like", { ascending: false })
@@ -36,7 +36,7 @@ function App() {
 
         if (!error) setFacts(facts);
         else alert("There was a problem loading the data");
-        setLoading(false);
+        setIsLoading(false);
       }
       getFacts();
     },
@@ -54,7 +54,11 @@ function App() {
       ) : null}
       <main className="main">
         <FilterCategory setCategory={setCategory} />
-        {loading ? <Loader /> : <FactList facts={facts} />}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FactList facts={facts} setFacts={setFacts} />
+        )}
       </main>
     </>
   );
@@ -197,7 +201,7 @@ function FilterCategory({ setCategory }) {
   );
 }
 
-function FactList({ facts }) {
+function FactList({ facts, setFacts }) {
   if (facts.length === 0) {
     return (
       <p className="message">
@@ -209,7 +213,7 @@ function FactList({ facts }) {
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <Fact key={fact.id} fact={fact} />
+          <Fact key={fact.id} fact={fact} setFacts={setFacts} />
         ))}
       </ul>
       <p>There are {facts.length} facts in the Database.</p>
@@ -217,7 +221,18 @@ function FactList({ facts }) {
   );
 }
 
-function Fact({ fact }) {
+function Fact({ fact, setFacts }) {
+  async function handleUpvote(votetype) {
+    const { data: upvotedFact, error } = await supabase
+      .from("facts")
+      .update({ [votetype]: fact[votetype] + 1 })
+      .eq("id", fact.id)
+      .select();
+    if (!error)
+      setFacts((facts) =>
+        facts.map((f) => (f.id === fact.id ? upvotedFact[0] : f))
+      );
+  }
   return (
     <li key={fact.id} className="facts">
       <p>
@@ -242,9 +257,15 @@ function Fact({ fact }) {
         </span>
       </p>
       <div className="vote-buttons">
-        <button>👍 {fact.votes_like}</button>
-        <button>🤯 {fact.votes_mindblowing}</button>
-        <button>⛔️ {fact.votes_false}</button>
+        <button onClick={() => handleUpvote("votes_like")}>
+          👍 {fact.votes_like}
+        </button>
+        <button onClick={() => handleUpvote("votes_mindblowing")}>
+          🤯 {fact.votes_mindblowing}
+        </button>
+        <button onClick={() => handleUpvote("votes_false")}>
+          ⛔️ {fact.votes_false}
+        </button>
       </div>
     </li>
   );
