@@ -93,25 +93,39 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
   const [category, setCategory] = useState("");
   const textLength = text.length;
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     // Prevent page from reloading.
     e.preventDefault();
     // Check if the Data is valid.
+
     if (text && isValidUrl(source) && category && textLength <= 200) {
-      console.log("Valid Data");
       // Create a FactObj
-      const FactObj = {
-        id: Math.round(Math.random() * 1000),
-        text: text,
-        source: source,
-        category: category,
-        votesInteresting: 0,
-        votesMindblowing: 0,
-        votesFalse: 0,
-        createdIn: new Date().getFullYear(),
-      };
+      // const FactObj = {
+      //   id: Math.round(Math.random() * 1000),
+      //   text: text,
+      //   source: source,
+      //   category: category,
+      //   votesInteresting: 0,
+      //   votesMindblowing: 0,
+      //   votesFalse: 0,
+      //   createdIn: new Date().getFullYear(),
+      // };
+
+      // Upload fact to Supabase
+
+      const { data: FactObj, error } = await supabase
+        .from("facts")
+        .insert([{ fact: text, source: source, category: category }])
+        .select();
+      if (error) {
+        alert(
+          "There was some problem with uploading. Please try after sometime"
+        );
+      }
       // Add it to the UI.
-      setFacts([FactObj, ...facts]);
+      else {
+        setFacts([FactObj[0], ...facts]);
+      }
       // Reset the form.
       setText("");
       setCategory("");
