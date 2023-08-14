@@ -223,6 +223,8 @@ function FactList({ facts, setFacts }) {
 
 function Fact({ fact, setFacts }) {
   const [isUpdating, setIsUpdating] = useState(false);
+  const isDisputed =
+    fact.votes_like + fact.votes_mindblowing < fact.votes_false;
   async function handleUpvote(votetype) {
     setIsUpdating(true);
     const { data: upvotedFact, error } = await supabase
@@ -239,6 +241,7 @@ function Fact({ fact, setFacts }) {
   return (
     <li key={fact.id} className="facts">
       <p>
+        {isDisputed ? <span className="disputed">[DISPUTED⛔️]</span> : null}
         {fact.fact}
         <a
           className="source"
