@@ -194,6 +194,9 @@ ul {
 .vote-buttons button:hover {
   background-color: #111827;
 }
+.vote-buttons button:disabled {
+  background-color: #44403c;
+}
 
 .btn {
   font-family: "Coiny", sans-serif;

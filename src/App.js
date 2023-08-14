@@ -222,7 +222,9 @@ function FactList({ facts, setFacts }) {
 }
 
 function Fact({ fact, setFacts }) {
+  const [isUpdating, setIsUpdating] = useState(false);
   async function handleUpvote(votetype) {
+    setIsUpdating(true);
     const { data: upvotedFact, error } = await supabase
       .from("facts")
       .update({ [votetype]: fact[votetype] + 1 })
@@ -232,6 +234,7 @@ function Fact({ fact, setFacts }) {
       setFacts((facts) =>
         facts.map((f) => (f.id === fact.id ? upvotedFact[0] : f))
       );
+    setIsUpdating(false);
   }
   return (
     <li key={fact.id} className="facts">
@@ -257,13 +260,22 @@ function Fact({ fact, setFacts }) {
         </span>
       </p>
       <div className="vote-buttons">
-        <button onClick={() => handleUpvote("votes_like")}>
+        <button
+          disabled={isUpdating}
+          onClick={() => handleUpvote("votes_like")}
+        >
           👍 {fact.votes_like}
         </button>
-        <button onClick={() => handleUpvote("votes_mindblowing")}>
+        <button
+          disabled={isUpdating}
+          onClick={() => handleUpvote("votes_mindblowing")}
+        >
           🤯 {fact.votes_mindblowing}
         </button>
-        <button onClick={() => handleUpvote("votes_false")}>
+        <button
+          disabled={isUpdating}
+          onClick={() => handleUpvote("votes_false")}
+        >
           ⛔️ {fact.votes_false}
         </button>
       </div>
