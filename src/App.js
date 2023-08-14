@@ -91,6 +91,7 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("https://www.google.co.in");
   const [category, setCategory] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const textLength = text.length;
 
   async function handleSubmit(e) {
@@ -112,7 +113,7 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
       // };
 
       // Upload fact to Supabase
-
+      setIsUploading(true);
       const { data: FactObj, error } = await supabase
         .from("facts")
         .insert([{ fact: text, source: source, category: category }])
@@ -126,6 +127,7 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
       else {
         setFacts([FactObj[0], ...facts]);
       }
+      setIsUploading(false);
       // Reset the form.
       setText("");
       setCategory("");
@@ -140,16 +142,22 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
         type="text"
         value={text}
         placeholder="Share your facts"
+        disabled={isUploading}
         onChange={(e) => setText(e.target.value)}
       />
       <span>{200 - textLength}</span>
       <input
         type="text"
         value={source}
+        disabled={isUploading}
         placeholder="trustworthy source"
         onChange={(e) => setSource(e.target.value)}
       />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select
+        value={category}
+        disabled={isUploading}
+        onChange={(e) => setCategory(e.target.value)}
+      >
         <option value="">Choose a category:</option>
         {CATEGORIES.map((category) => (
           <option key={category.name} value={category.name}>
@@ -157,7 +165,9 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
           </option>
         ))}
       </select>
-      <button className="btn btn-large">Post</button>
+      <button className="btn btn-large" disabled={isUploading}>
+        Post
+      </button>
     </form>
   );
 }
