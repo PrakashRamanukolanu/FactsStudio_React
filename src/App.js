@@ -82,14 +82,14 @@ function Header({ showForm, setShowForm }) {
 }
 
 // Copied from internet
-function isValidUrl(string) {
-  try {
-    new URL(string);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
+// function isValidUrl(string) {
+//   try {
+//     new URL(string);
+//     return true;
+//   } catch (err) {
+//     return false;
+//   }
+// }
 
 function NewFactForm({ setFacts, facts, setShowForm }) {
   const [text, setText] = useState("");
