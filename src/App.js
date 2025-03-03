@@ -104,17 +104,6 @@ function NewFactForm({ setFacts, facts, setShowForm }) {
     // Check if the Data is valid.
 
     if (text && isValidUrl(source) && category && textLength <= 200) {
-      // Create a FactObj
-      // const FactObj = {
-      //   id: Math.round(Math.random() * 1000),
-      //   text: text,
-      //   source: source,
-      //   category: category,
-      //   votesInteresting: 0,
-      //   votesMindblowing: 0,
-      //   votesFalse: 0,
-      //   createdIn: new Date().getFullYear(),
-      // };
 
       // Upload fact to Supabase
       setIsUploading(true);
