@@ -1,0 +1,21 @@
+name: Create Small Artifact Manually
+
+on:
+  workflow_dispatch:  # Enables manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create a small artifact
+        run: echo "This is a small artifact file" > artifact.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: small-artifact
+          path: artifact.txt
