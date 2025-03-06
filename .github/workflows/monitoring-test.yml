@@ -19,3 +19,8 @@ jobs:
         with:
           name: small-artifact
           path: artifact.txt
+          
+      - name: Simulating a failure
+        run: |
+          echo "This job is supposed to fail"
+          exit 1  # Forces the job to fail
