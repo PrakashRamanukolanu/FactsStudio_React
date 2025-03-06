@@ -19,7 +19,11 @@ jobs:
         with:
           name: small-artifact
           path: artifact.txt
-          
+
+  fail_job:
+     runs-on: ubuntu-latest
+     
+     steps:        
       - name: Simulating a failure
         run: |
           echo "This job is supposed to fail"
