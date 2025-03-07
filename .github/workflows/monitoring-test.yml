@@ -28,3 +28,12 @@ jobs:
         run: |
           echo "This job is supposed to fail"
           exit 1  # Forces the job to fail
+          
+  new_job:
+     runs-on: ubuntu-latest
+     
+     steps:        
+      - name: Simulating a failure
+        run: |
+          echo "This job is supposed to pass"
+          exit 0  # Forces the job to fail
