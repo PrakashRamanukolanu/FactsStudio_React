@@ -1,4 +1,4 @@
-name: test
+name: testing new workflow
 
 on:
   workflow_dispatch:  # Enables manual trigger
