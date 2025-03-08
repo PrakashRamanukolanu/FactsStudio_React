@@ -1,7 +1,7 @@
 name: Create Small Artifact Manually
 
 on:
-  workflow_dispatch:  # Enables manual trigger
+  push:  # Enables manual trigger
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
      runs-on: ubuntu-latest
      
      steps:        
-      - name: Simulating a failure
+      - name: Simulating a pass
         run: |
           echo "This job is supposed to pass"
           exit 0  # Forces the job to fail
