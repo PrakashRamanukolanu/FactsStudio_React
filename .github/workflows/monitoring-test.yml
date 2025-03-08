@@ -1,7 +1,8 @@
 name: Create Small Artifact Manually
 
 on:
-  push:  # Enables manual trigger
+  workflow_dispatch:  # Enables manual trigger
+  push:
 
 jobs:
   build:
