@@ -1,0 +1,46 @@
+name: Create Small Artifact Manually
+
+on:
+  workflow_dispatch:  # Enables manual trigger
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create a small artifact
+        run: echo "This is a small artifact file" > artifact.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: small-artifact
+          path: artifact.txt
+
+  fail_job:
+     runs-on: ubuntu-latest
+     steps:        
+      - name: Simulating a failure
+        run: |
+          echo "This job is supposed to fail"
+          exit 1  # Forces the job to fail
+          
+  test_job:
+     runs-on: ubuntu-latest
+     
+     steps:        
+      - name: Simulating a pass
+        run: |
+          echo "This job is supposed to pass"
+          exit 0  # Forces the job to pass
+          
+  test:
+    runs-on: ubuntu-latest
+    if: false  # This condition ensures the job is never executed
+    steps:
+      - name: Skip this job
+        run: echo "This job is skipped"
