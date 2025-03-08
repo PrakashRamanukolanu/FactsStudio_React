@@ -1,4 +1,4 @@
-name: Create Small Artifact Manually
+name: test
 
 on:
   workflow_dispatch:  # Enables manual trigger
