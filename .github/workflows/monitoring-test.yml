@@ -36,7 +36,7 @@ jobs:
       - name: Simulating a pass
         run: |
           echo "This job is supposed to pass"
-          exit 0  # Forces the job to pass
+          exit 1  # Forces the job to pass
 
   # test_job:
   #    runs-on: ubuntu-latest
