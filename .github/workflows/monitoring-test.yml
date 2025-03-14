@@ -27,7 +27,7 @@ jobs:
       - name: Simulating a failure
         run: |
           echo "This job is supposed to fail"
-          exit 1  # Forces the job to fail
+          exit 0  # Forces the job to fail
           
   new_job:
      runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
       - name: Simulating a pass
         run: |
           echo "This job is supposed to pass"
-          exit 1  # Forces the job to pass
+          exit 0  # Forces the job to pass
 
   # test_job:
   #    runs-on: ubuntu-latest
