@@ -27,7 +27,7 @@ jobs:
       - name: Simulating a failure
         run: |
           echo "This job is supposed to fail"
-          exit 0  # Forces the job to fail
+          exit 1  # Forces the job to fail
           
   new_job:
      runs-on: ubuntu-latest
