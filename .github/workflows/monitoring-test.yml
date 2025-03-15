@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,28 +20,54 @@ jobs:
           name: small-artifact
           path: artifact.txt
 
+      - name: Push Success Metric for Build
+        if: success()
+        run: |
+          echo "job_conclusion{job_name=\"build\", conclusion=\"success\"} 1" > metrics.txt
+          curl --data-binary @metrics.txt http://65.0.130.50:9091/metrics/job/build
+
+      - name: Push Failure Metric for Build
+        if: failure()
+        run: |
+          echo "job_conclusion{job_name=\"build\", conclusion=\"failure\"} 1" > metrics.txt
+          curl --data-binary @metrics.txt http://65.0.130.50:9091/metrics/job/build
+
   fail_job:
-     runs-on: ubuntu-latest
-     steps:        
+    runs-on: ubuntu-latest
+    steps:
       - name: Simulating a failure
         run: |
           echo "This job is supposed to fail"
           exit 1  # Forces the job to fail
-          
+
+      - name: Push Success Metric for Fail Job
+        if: success()
+        run: |
+          echo "job_conclusion{job_name=\"fail_job\", conclusion=\"success\"} 1" > metrics.txt
+          curl --data-binary @metrics.txt http://65.0.130.50:9091/metrics/job/fail_job
+
+      - name: Push Failure Metric for Fail Job
+        if: failure()
+        run: |
+          echo "job_conclusion{job_name=\"fail_job\", conclusion=\"failure\"} 1" > metrics.txt
+          curl --data-binary @metrics.txt http://65.0.130.50:9091/metrics/job/fail_job
+
   new_job:
-     runs-on: ubuntu-latest
-     
-     steps:        
+    runs-on: ubuntu-latest
+    steps:
       - name: Simulating a pass
         run: |
           echo "This job is supposed to pass"
           exit 0  # Forces the job to pass
 
-  # test_job:
-  #    runs-on: ubuntu-latest
-     
-  #    steps:        
-  #     - name: Simulating a test
-  #       run: |
-  #         echo "This job is newly added and is supposed to pass"
-  #         exit 0  # Forces the job to pass
+      - name: Push Success Metric for New Job
+        if: success()
+        run: |
+          echo "job_conclusion{job_name=\"new_job\", conclusion=\"success\"} 1" > metrics.txt
+          curl --data-binary @metrics.txt http://65.0.130.50:9091/metrics/job/new_job
+
+      - name: Push Failure Metric for New Job
+        if: failure()
+        run: |
+          echo "job_conclusion{job_name=\"new_job\", conclusion=\"failure\"} 1" > metrics.txt
+          curl --data-binary @metrics.txt http://65.0.130.50:9091/metrics/job/new_job
